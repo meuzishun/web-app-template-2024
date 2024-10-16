@@ -6,10 +6,10 @@ import {
   Navigate,
 } from 'react-router-dom';
 
-const HomePage = lazy(() => import('../pages/HomePage'));
-const AboutPage = lazy(() => import('../pages/AboutPage'));
-const ContactPage = lazy(() => import('../pages/ContactPage'));
-const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+const HomePage = lazy(() => import('~/pages/HomePage'));
+const AboutPage = lazy(() => import('~/pages/AboutPage'));
+const ContactPage = lazy(() => import('~/pages/ContactPage'));
+const NotFoundPage = lazy(() => import('~/pages/NotFoundPage'));
 
 const Loader: React.FC = () => <div>Loading...</div>;
 

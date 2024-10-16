@@ -1,4 +1,4 @@
-import { useCounter } from '../hooks';
+import { useCounter } from '~/hooks';
 
 function HomePage() {
   const { counterValue, incrementCount, decrementCount } = useCounter();

@@ -1,9 +1,9 @@
-import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '~/store/hooks';
 import {
   increment,
   decrement,
   incrementByAmount,
-} from '../store/slices/counterSlice';
+} from '~/store/slices/counterSlice';
 
 export const useCounter = () => {
   const appDispatch = useAppDispatch();
