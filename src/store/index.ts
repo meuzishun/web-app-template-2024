@@ -1,4 +1,5 @@
-import store, { RootState, AppDispatch } from './store';
+import store from './store';
+import { useAppSelector, useAppDispatch } from './hooks';
 
 export default store;
-export type { RootState, AppDispatch };
+export { useAppSelector, useAppDispatch };
