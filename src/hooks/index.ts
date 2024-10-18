@@ -1,3 +1,5 @@
 import { useCounter } from './useCounter';
+import { useUsers } from './useUsers';
+import { usePosts } from './usePosts';
 
-export { useCounter };
+export { useCounter, useUsers, usePosts };
