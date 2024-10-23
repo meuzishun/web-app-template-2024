@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '~/store';
-import { increment, decrement, incrementByAmount } from '~/slices/counterSlice';
+import { increment, decrement, incrementByAmount } from '../slices';
 
 export const useCounter = () => {
   const appDispatch = useAppDispatch();
