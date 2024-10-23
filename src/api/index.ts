@@ -1,3 +1,3 @@
-import { fetchPosts, createPost, updatePost, deletePost } from './posts';
+import axiosInstance from './axios';
 
-export { fetchPosts, createPost, updatePost, deletePost };
+export { axiosInstance };
