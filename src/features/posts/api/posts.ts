@@ -1,5 +1,5 @@
-import axiosInstance from '~/api/axios';
-import { Post } from '~/types';
+import { axiosInstance } from '~/api';
+import type { Post } from '../types';
 
 export const fetchPosts = async (): Promise<Post[]> => {
   const response = await axiosInstance.get('/posts');

@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deletePost } from '~/api';
+import { createPost } from '../api';
 
-export const useDeletePost = () => {
+export const useCreatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deletePost,
+    mutationFn: createPost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
