@@ -1,3 +1,1 @@
-import type { Post } from './postTypes';
-
-export type { Post };
+export type { PostType } from './postTypes';
