@@ -1,15 +1,4 @@
-import type { Post as PostType } from './types';
-import { fetchPosts, createPost, updatePost, deletePost } from './api';
-import { usePosts } from './hooks';
-import { PostList, Post } from './components';
-
-export type { PostType };
-export {
-  fetchPosts,
-  createPost,
-  updatePost,
-  deletePost,
-  usePosts,
-  PostList,
-  Post,
-};
+export * from './types';
+export * from './api';
+export * from './hooks';
+export * from './components';
