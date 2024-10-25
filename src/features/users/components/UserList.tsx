@@ -1,5 +1,5 @@
 import React from 'react';
-import { User as UserType } from '../types';
+import { UserType } from '../types';
 import { useUsers } from '../hooks';
 import User from './User';
 
