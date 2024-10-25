@@ -1,3 +1,1 @@
-import { useUsers } from './useUsers';
-
-export { useUsers };
+export { useUsers } from './useUsers';
