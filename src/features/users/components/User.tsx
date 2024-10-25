@@ -1,5 +1,5 @@
 import React from 'react';
-import type { User as UserType } from '../types';
+import type { UserType } from '../types';
 
 interface UserProps {
   user: UserType;
