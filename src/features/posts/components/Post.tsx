@@ -1,6 +1,6 @@
 import React from 'react';
 import { useUpdatePost, useDeletePost } from '../hooks';
-import type { Post as PostType } from '../types';
+import type { PostType } from '../types';
 
 interface PostProps {
   post: PostType;
