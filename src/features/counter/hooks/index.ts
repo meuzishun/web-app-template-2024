@@ -1,3 +1,1 @@
-import { useCounter } from './useCounter';
-
-export { useCounter };
+export * from './useCounter';

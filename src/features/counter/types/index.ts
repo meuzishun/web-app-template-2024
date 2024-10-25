@@ -1,3 +1,1 @@
-import type { CounterState } from './counterStateTypes';
-
-export { CounterState };
+export * from './counterStateTypes';

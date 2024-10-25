@@ -1,7 +1,2 @@
-import counterSlice, {
-  increment,
-  decrement,
-  incrementByAmount,
-} from './counterSlice';
-
-export { counterSlice, increment, decrement, incrementByAmount };
+export { default as counterSlice } from './counterSlice';
+export * from './counterSlice';
