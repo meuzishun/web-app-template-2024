@@ -1,0 +1,47 @@
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Create a directory if it doesn't already exist.
+ * @param dirPath - The path of the directory to create.
+ */
+export const createDirectory = (dirPath: string): void => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+    console.log(`Created directory: ${dirPath}`);
+  }
+};
+
+/**
+ * Write content to a file. Creates the file if it doesn't exist.
+ * @param filePath - The path of the file to write to.
+ * @param content - The content to write to the file.
+ */
+export const writeFile = (filePath: string, content: string): void => {
+  fs.writeFileSync(filePath, content);
+  console.log(`Created file: ${filePath}`);
+};
+
+/**
+ * Get the full path for a given base directory and a relative path.
+ * @param baseDir - The base directory.
+ * @param relativePath - The relative path to resolve against the base directory.
+ * @returns The full path.
+ */
+export const getFullPath = (baseDir: string, relativePath: string): string => {
+  return path.join(baseDir, relativePath);
+};
+
+/**
+ * Create a file and its parent directories if they do not exist.
+ * @param filePath - The full path of the file to create.
+ * @param content - The content to write to the file.
+ */
+export const createFileWithDirectories = (
+  filePath: string,
+  content: string
+): void => {
+  const dirPath = path.dirname(filePath);
+  createDirectory(dirPath); // Ensure the directory exists
+  writeFile(filePath, content); // Write the file
+};
