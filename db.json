@@ -24,5 +24,17 @@
       "content": "This is post 2",
       "userId": 1
     }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "content": "Awesome!",
+      "userId": 1
+    },
+    {
+      "id": "2",
+      "content": "This is stupid.",
+      "userId": 1
+    }
   ]
 }
