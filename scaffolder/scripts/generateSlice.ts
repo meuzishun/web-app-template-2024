@@ -5,6 +5,8 @@ import {
   FeatureNamesType,
   generateFeatureNames,
   closeCLI,
+  requireNonEmpty,
+  askConfirmation,
 } from '../utils';
 
 import { sliceTemplate } from '../templates/sliceTemplate';
@@ -46,8 +48,42 @@ export const generateSlice = (
 
 // Check if the module is running directly
 if (process.argv[1] === new URL(import.meta.url).pathname) {
-  const [, , location, featureName] = process.argv;
-  const featureNamesDict = generateFeatureNames(featureName);
-  generateSlice(location, featureNamesDict);
-  closeCLI();
+  (async () => {
+    try {
+      // Prompt for location if not provided
+      let location = process.argv[2];
+      if (!location) {
+        location = await requireNonEmpty(
+          'Enter the location directory for the slice:'
+        );
+      }
+
+      // Prompt for feature name if not provided
+      let featureName = process.argv[3];
+      if (!featureName) {
+        featureName = await requireNonEmpty(
+          'Enter the feature name (e.g., "posts"):'
+        );
+      }
+
+      const featureNamesDict = generateFeatureNames(featureName);
+
+      // Confirm slice creation
+      const confirmSlice = await askConfirmation(
+        `Generate a slice for feature '${featureNamesDict.original}' in ${location}?`
+      );
+      if (!confirmSlice) {
+        console.log('Slice generation canceled.');
+        closeCLI();
+        return;
+      }
+
+      // Generate the slice if confirmed
+      generateSlice(location, featureNamesDict);
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+    } finally {
+      closeCLI();
+    }
+  })();
 }
