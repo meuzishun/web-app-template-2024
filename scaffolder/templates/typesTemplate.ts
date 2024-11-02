@@ -8,6 +8,7 @@ export const typesTemplate = (
 
   return `export interface ${SingularPascal}Type {
   ${typeProperties}
+  // Add more fields here
 }
 
 export interface ${PluralPascal}State {
