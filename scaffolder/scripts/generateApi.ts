@@ -5,28 +5,91 @@ import {
   updateIndexFile,
   FeatureNamesType,
   generateFeatureNames,
+  requireNonEmpty,
+  askConfirmation,
 } from '../utils';
 
 import { apiTemplate } from '../templates';
 
 /**
+ * Prompts the user to choose which CRUD operations to include in the API.
+ * @returns An object with boolean values indicating which operations to include.
+ */
+const promptForApiOptions = async (): Promise<{
+  includeGetAll: boolean;
+  includeGetOne: boolean;
+  includeCreate: boolean;
+  includeUpdate: boolean;
+  includeDelete: boolean;
+}> => {
+  const includeGetAll = await askConfirmation('Include "Get All" function?');
+  const includeGetOne = await askConfirmation(
+    'Include "Get One by ID" function?'
+  );
+  const includeCreate = await askConfirmation('Include "Create" function?');
+  const includeUpdate = await askConfirmation('Include "Update" function?');
+  const includeDelete = await askConfirmation('Include "Delete" function?');
+
+  return {
+    includeGetAll,
+    includeGetOne,
+    includeCreate,
+    includeUpdate,
+    includeDelete,
+  };
+};
+
+/**
  * Generates an API file for the specified feature and updates the index file.
  * @param location - The directory where the API file will be saved.
- * @param featureNamesDict - A dictionary of versions of the feature name (e.g., 'posts', 'Posts', 'post', 'Post').
+ * @param featureNamesDict - A dictionary of versions of the feature name.
+ * @param apiOptions - The selected CRUD operations to include in the API.
  */
-export const generateApi = (
-  location: string,
-  featureNamesDict: FeatureNamesType
+export const generateApi = async (
+  location?: string,
+  featureNamesDict?: FeatureNamesType,
+  apiOptions?: {
+    includeGetAll: boolean;
+    includeGetOne: boolean;
+    includeCreate: boolean;
+    includeUpdate: boolean;
+    includeDelete: boolean;
+  }
 ) => {
-  // Ensure location and featureName are provided
-  if (!location || !featureNamesDict) {
-    console.error('Usage: generateApi <location> <featureName>');
-    process.exit(1);
+  // Prompt for location if not provided
+  if (!location) {
+    location = await requireNonEmpty(
+      'Enter the location directory for the API file:'
+    );
   }
 
-  const apiContent = apiTemplate(featureNamesDict);
+  // Prompt for feature name if featureNamesDict is not provided
+  if (!featureNamesDict) {
+    const featureName = await requireNonEmpty(
+      'Enter the feature name (e.g., "posts"):'
+    );
+    featureNamesDict = generateFeatureNames(featureName);
+  }
 
-  // Define the full path for the new API file using getFullPath utility
+  // Prompt for API options if not provided
+  if (!apiOptions) {
+    apiOptions = await promptForApiOptions();
+  }
+
+  // Confirm API file creation
+  const confirmApi = await askConfirmation(
+    `Generate API for feature '${featureNamesDict.original}' in ${location}?`
+  );
+  if (!confirmApi) {
+    console.log('API generation canceled.');
+    closeCLI();
+    return;
+  }
+
+  // Generate API content from the template
+  const apiContent = apiTemplate(featureNamesDict, apiOptions);
+
+  // Define the full path for the new API file
   const filePath = getFullPath(
     location,
     `${featureNamesDict.pluralCamel}Api.ts`
@@ -45,8 +108,21 @@ export const generateApi = (
 
 // Check if the module is running directly
 if (process.argv[1] === new URL(import.meta.url).pathname) {
-  const [, , location, featureName] = process.argv;
-  const featureNamesDict = generateFeatureNames(featureName);
-  generateApi(location, featureNamesDict);
-  closeCLI();
+  (async () => {
+    try {
+      // Parse CLI arguments for location and feature name, if provided
+      const [, , locationArg, featureNameArg] = process.argv;
+      const location = locationArg ? locationArg : undefined;
+      const featureNamesDict = featureNameArg
+        ? generateFeatureNames(featureNameArg)
+        : undefined;
+
+      // Run generateApi with optional prompts for missing arguments
+      await generateApi(location, featureNamesDict);
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+    } finally {
+      closeCLI();
+    }
+  })();
 }

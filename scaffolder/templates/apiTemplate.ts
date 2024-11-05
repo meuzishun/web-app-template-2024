@@ -1,28 +1,69 @@
 import { FeatureNamesType } from '../utils';
 
-export const apiTemplate = (featureNamesDict: FeatureNamesType): string => {
-  return `import { axiosInstance } from '~/api';
-import type { ${featureNamesDict.SingularPascal}Type } from '../types';
+interface ApiOptions {
+  includeGetAll: boolean;
+  includeGetOne: boolean;
+  includeCreate: boolean;
+  includeUpdate: boolean;
+  includeDelete: boolean;
+}
 
-const url = '/${featureNamesDict.pluralCamel}';
+export const apiTemplate = (
+  featureNamesDict: FeatureNamesType,
+  options: ApiOptions
+): string => {
+  const { pluralCamel, PluralPascal, SingularPascal } = featureNamesDict;
 
-export const fetch${featureNamesDict.PluralPascal} = async (): Promise<${featureNamesDict.SingularPascal}Type[]> => {
+  const urlDeclaration = `const url = '/${pluralCamel}';`;
+
+  const getAllFunction = options.includeGetAll
+    ? `
+export const fetch${PluralPascal} = async (): Promise<${SingularPascal}Type[]> => {
   const response = await axiosInstance.get(url);
   return response.data;
-};
+};`
+    : '';
 
-export const create${featureNamesDict.SingularPascal} = async (new${featureNamesDict.SingularPascal}: Omit<${featureNamesDict.SingularPascal}Type, 'id'>) => {
-  const response = await axiosInstance.post(url, new${featureNamesDict.SingularPascal});
+  const getOneFunction = options.includeGetOne
+    ? `
+export const fetch${SingularPascal}ById = async (id: number): Promise<${SingularPascal}Type | null> => {
+  const response = await axiosInstance.get(\`\${url}/\${id}\`);
   return response.data;
-};
+};`
+    : '';
 
-export const update${featureNamesDict.SingularPascal} = async (updated${featureNamesDict.SingularPascal}: ${featureNamesDict.SingularPascal}Type) => {
-  const response = await axiosInstance.put(\`\${url}/\${updated${featureNamesDict.SingularPascal}.id}\`, updated${featureNamesDict.SingularPascal});
+  const createFunction = options.includeCreate
+    ? `
+export const create${SingularPascal} = async (new${SingularPascal}: Omit<${SingularPascal}Type, 'id'>): Promise<${SingularPascal}Type> => {
+  const response = await axiosInstance.post(url, new${SingularPascal});
   return response.data;
-};
+};`
+    : '';
 
-export const delete${featureNamesDict.SingularPascal} = async (id: number) => {
+  const updateFunction = options.includeUpdate
+    ? `
+export const update${SingularPascal} = async (updated${SingularPascal}: ${SingularPascal}Type): Promise<${SingularPascal}Type> => {
+  const response = await axiosInstance.put(\`\${url}/\${updated${SingularPascal}.id}\`, updated${SingularPascal});
+  return response.data;
+};`
+    : '';
+
+  const deleteFunction = options.includeDelete
+    ? `
+export const delete${SingularPascal} = async (id: number): Promise<void> => {
   await axiosInstance.delete(\`\${url}/\${id}\`);
-};
+};`
+    : '';
+
+  return `import { axiosInstance } from '~/api';
+import type { ${SingularPascal}Type } from '../types';
+
+${urlDeclaration}
+
+${getAllFunction}
+${getOneFunction}
+${createFunction}
+${updateFunction}
+${deleteFunction}
 `;
 };
