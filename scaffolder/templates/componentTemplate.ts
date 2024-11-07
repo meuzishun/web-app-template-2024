@@ -8,16 +8,16 @@ import type { ${featureNamesDict.SingularPascal}Type } from '../types';
 
 interface ${featureNamesDict.SingularPascal}Props {
   title?: string;
-  ${featureNamesDict.singularCamel}: ${featureNamesDict.SingularPascal}Type[];
+  ${featureNamesDict.pluralCamel}: ${featureNamesDict.SingularPascal}Type[];
   // Add more prop types here
 }
 
-const ${featureNamesDict.PluralPascal}: React.FC<${featureNamesDict.SingularPascal}Props> = ({ title, ${featureNamesDict.singularCamel} }) => {
+const ${featureNamesDict.PluralPascal}: React.FC<${featureNamesDict.SingularPascal}Props> = ({ title, ${featureNamesDict.pluralCamel} }) => {
   return (
     <div>
       {title && <h1>{title}</h1>}
       <p>${featureNamesDict.SingularPascal} works!</p>
-      {${featureNamesDict.singularCamel}.map((${featureNamesDict.singularCamel}) => <div key={${featureNamesDict.singularCamel}.id}>${featureNamesDict.singularCamel}</div>)}
+      {${featureNamesDict.pluralCamel}.map((${featureNamesDict.singularCamel}) => <div key={${featureNamesDict.singularCamel}.id}>${featureNamesDict.singularCamel}</div>)}
     </div>
   );
 };
