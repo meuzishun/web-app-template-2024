@@ -7,6 +7,8 @@ import {
   closeCLI,
   requireNonEmpty,
   askConfirmation,
+  askForDirectory,
+  showHeader,
 } from '../utils';
 
 import { typesTemplate } from '../templates/typesTemplate';
@@ -66,9 +68,11 @@ export const generateType = async (
   featureNamesDict?: FeatureNamesType,
   typeProperties?: string
 ) => {
+  showHeader('Type Generation');
+
   // Prompt for location if not provided
   if (!location) {
-    location = await requireNonEmpty(
+    location = await askForDirectory(
       'Enter the location directory for the type definition:'
     );
   }
