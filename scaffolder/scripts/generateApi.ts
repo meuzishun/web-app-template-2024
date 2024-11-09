@@ -7,6 +7,7 @@ import {
   generateFeatureNames,
   requireNonEmpty,
   askConfirmation,
+  showHeader,
 } from '../utils';
 
 import { apiTemplate } from '../templates';
@@ -56,6 +57,8 @@ export const generateApi = async (
     includeDelete: boolean;
   }
 ) => {
+  showHeader('API Generation');
+
   // Prompt for location if not provided
   if (!location) {
     location = await requireNonEmpty(

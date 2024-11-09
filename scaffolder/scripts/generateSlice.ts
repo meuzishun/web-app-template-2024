@@ -7,6 +7,7 @@ import {
   closeCLI,
   requireNonEmpty,
   askConfirmation,
+  showHeader,
 } from '../utils';
 
 import { sliceTemplate } from '../templates/sliceTemplate';
@@ -20,6 +21,8 @@ export const generateSlice = (
   location: string,
   featureNamesDict: FeatureNamesType
 ) => {
+  showHeader('Slice Generation');
+
   // Ensure location and featureName are provided
   if (!location || !featureNamesDict) {
     console.error('Usage: generateSlice <location> <featureName>');

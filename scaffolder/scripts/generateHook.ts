@@ -8,6 +8,7 @@ import {
   requireNonEmpty,
   askConfirmation,
   showMessage,
+  showHeader,
 } from '../utils';
 
 import { hookTemplate } from '../templates/hookTemplate';
@@ -63,6 +64,8 @@ export const generateHooks = async (
     includeCustomHook: boolean;
   }
 ) => {
+  showHeader('Hook Generation');
+
   // Prompt for location if not provided
   if (!location) {
     location = await requireNonEmpty(

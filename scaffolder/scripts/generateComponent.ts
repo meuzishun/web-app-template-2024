@@ -5,6 +5,7 @@ import {
   updateIndexFile,
   FeatureNamesType,
   generateFeatureNames,
+  showHeader,
 } from '../utils';
 
 import { componentTemplate } from '../templates';
@@ -18,6 +19,8 @@ export const generateComponent = (
   location: string,
   featureNamesDict: FeatureNamesType
 ) => {
+  showHeader('Component Generation');
+
   // Ensure location and featureName are provided
   if (!location || !featureNamesDict) {
     console.error('Usage: generateComponent <location> <featureName>');
