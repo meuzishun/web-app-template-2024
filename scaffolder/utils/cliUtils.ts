@@ -1,42 +1,74 @@
-import readline from 'readline';
+import inquirer from 'inquirer';
 import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
 
-// Initialize readline interface for CLI interactions
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-// Utility function for prompting a question and getting an answer
-export const askQuestion = (question: string): Promise<string> => {
-  return new Promise((resolve) => {
-    rl.question(chalk.cyan(question + ' '), (answer) => {
-      resolve(answer.trim());
-    });
-  });
+// Consistent display for static messages like headers
+export const showHeader = (scriptName: string) => {
+  const headerMessage = `*** Starting ${scriptName} ***`;
+  console.log(chalk.bgBlue.white.bold(`\n${headerMessage}\n`));
 };
 
-// Utility for confirming an action, color-coded to distinguish question type
+// Prompt the user with a general text input
+export const askQuestion = async (question: string): Promise<string> => {
+  const { answer } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'answer',
+      message: chalk.cyan(question),
+    },
+  ]);
+  return answer.trim();
+};
+
+// Confirm an action with a yes/no prompt
 export const askConfirmation = async (question: string): Promise<boolean> => {
-  const answer = await askQuestion(chalk.yellow(`${question} (y/n): `));
-  return answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
+  const { confirm } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'confirm',
+      message: chalk.yellow(question),
+    },
+  ]);
+  return confirm;
 };
 
-// Utility to validate a non-empty answer, re-prompts if empty, with warning color
+// Validate non-empty input, with validation to prevent empty answers
 export const requireNonEmpty = async (question: string): Promise<string> => {
-  let answer = '';
-  while (!answer) {
-    answer = await askQuestion(chalk.cyan(question + ' '));
-    if (!answer) {
-      console.log(
-        chalk.red('Answer cannot be empty. Please provide a valid input.')
-      );
-    }
-  }
-  return answer;
+  const { answer } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'answer',
+      message: chalk.cyan(question),
+      validate: (input) => input.trim() !== '' || 'This field cannot be empty.',
+    },
+  ]);
+  return answer.trim();
 };
 
-// Utility for showing messages to the user, with color coding for types
+// Directory autocomplete prompt
+export const askForDirectory = async (question: string): Promise<string> => {
+  const { directory } = await inquirer.prompt([
+    {
+      type: 'autocomplete',
+      name: 'directory',
+      message: chalk.cyan(question),
+      // Use a custom autocomplete function for navigating directories
+      source: async (_, input = '') => {
+        const baseDir = path.resolve('.');
+        const inputPath = path.join(baseDir, input);
+        const dirs = fs
+          .readdirSync(inputPath, { withFileTypes: true })
+          .filter((dirent) => dirent.isDirectory())
+          .map((dirent) => path.join(input, dirent.name));
+        return dirs;
+      },
+    },
+  ]);
+  return directory;
+};
+
+// Show messages to the user, color-coded for type
 export const showMessage = (
   message: string,
   type: 'info' | 'success' | 'error' = 'info'
@@ -50,5 +82,5 @@ export const showMessage = (
   console.log(colorizedMessage);
 };
 
-// Close readline interface after all prompts
-export const closeCLI = () => rl.close();
+// Close the readline interface (no longer needed when using `inquirer`)
+export const closeCLI = () => process.exit(0);
