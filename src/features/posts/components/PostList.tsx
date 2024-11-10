@@ -1,6 +1,12 @@
 import React from 'react';
-import { usePosts, useCreatePost } from '../hooks';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import List from '@mui/material/List';
 import Post from './Post';
+import { usePosts, useCreatePost } from '../hooks';
 
 const PostList: React.FC = () => {
   const { data: posts, isLoading } = usePosts();
@@ -17,15 +23,25 @@ const PostList: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Posts</h1>
-      <button onClick={handleCreatePost}>Create Post</button>
-      <ul>
+    <Box>
+      <Stack direction='row' justifyContent='space-between' alignItems='center'>
+        <Typography variant='h3' sx={{ mb: 2 }}>
+          Posts
+        </Typography>
+        <Button
+          variant='outlined'
+          startIcon={<AddIcon />}
+          onClick={handleCreatePost}
+        >
+          Create Post
+        </Button>
+      </Stack>
+      <List>
         {posts?.map((post) => (
           <Post key={post.id} post={post} />
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 };
 
