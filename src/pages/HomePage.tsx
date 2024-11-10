@@ -12,7 +12,7 @@ function HomePage() {
 
   return (
     <Container>
-      <Typography variant='h6' align='center'>
+      <Typography variant='h6' align='center' sx={{ mt: 4 }}>
         What would a React demo be without the obligatory...
       </Typography>
       <Typography variant='h2' align='center'>
