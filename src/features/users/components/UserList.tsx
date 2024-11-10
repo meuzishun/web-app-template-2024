@@ -1,4 +1,5 @@
 import React from 'react';
+import List from '@mui/material/List';
 import { UserType } from '../types';
 import { useUsers } from '../hooks';
 import User from './User';
@@ -10,11 +11,11 @@ const UserList: React.FC = () => {
   if (error) return <div>Error loading users</div>;
 
   return (
-    <ul>
+    <List>
       {data?.map((user: UserType) => (
         <User key={user.id} user={user} />
       ))}
-    </ul>
+    </List>
   );
 };
 
