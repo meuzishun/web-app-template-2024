@@ -1,11 +1,11 @@
+import Container from '@mui/material/Container';
 import { PostList } from '~/features/posts';
 
 function AboutPage() {
   return (
-    <div>
-      AboutPage
+    <Container sx={{ mt: 8 }}>
       <PostList />
-    </div>
+    </Container>
   );
 }
 
