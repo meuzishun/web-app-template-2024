@@ -31,6 +31,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
     <ListItem
       sx={{
         p: 2,
+        mb: 4,
         backgroundColor: theme.palette.grey[50],
         borderRadius: 2,
       }}
