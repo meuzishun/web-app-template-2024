@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import { MainLayout } from '~/layouts';
 
 const HomePage = lazy(() => import('~/pages/HomePage'));
 const AboutPage = lazy(() => import('~/pages/AboutPage'));
@@ -18,11 +19,13 @@ const AppRoutes: React.FC = () => {
     <Router>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/about' element={<AboutPage />} />
-          <Route path='/contact' element={<ContactPage />} />
-          <Route path='/home' element={<Navigate to='/' />} />
-          <Route path='*' element={<NotFoundPage />} />
+          <Route path='/' element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/home' element={<Navigate to='/' />} />
+            <Route path='*' element={<NotFoundPage />} />
+          </Route>
         </Routes>
       </Suspense>
     </Router>
