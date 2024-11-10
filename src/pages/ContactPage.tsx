@@ -1,14 +1,16 @@
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { UserList } from '~/features/users';
 
 function ContactPage() {
   return (
-    <div>
-      ContactPage
-      <div>
-        <h1>Users</h1>
+    <Container sx={{ mt: 8 }}>
+      <Stack direction='column'>
+        <Typography variant='h3'>Users</Typography>
         <UserList />
-      </div>
-    </div>
+      </Stack>
+    </Container>
   );
 }
 
