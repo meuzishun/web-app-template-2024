@@ -1,4 +1,11 @@
 import React from 'react';
+import ListItem from '@mui/material/ListItem';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useTheme } from '@mui/material/styles';
 import { useUpdatePost, useDeletePost } from '../hooks';
 import type { PostType } from '../types';
 
@@ -18,12 +25,31 @@ const Post: React.FC<PostProps> = ({ post }) => {
     deletePostMutation.mutate(id);
   };
 
+  const theme = useTheme();
+
   return (
-    <li>
-      <h3>{post.title}</h3>
-      <button onClick={() => handleUpdatePost(post)}>Update Post</button>
-      <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
-    </li>
+    <ListItem
+      sx={{
+        p: 2,
+        backgroundColor: theme.palette.grey[50],
+        borderRadius: 2,
+      }}
+    >
+      <Stack direction='column' gap={4}>
+        <Typography variant='h5'>{post.title}</Typography>
+        <Typography variant='body1' sx={{ ml: 4 }}>
+          {post.content}
+        </Typography>
+        <Stack direction='row'>
+          <IconButton onClick={() => handleUpdatePost(post)}>
+            <EditIcon color='primary' />
+          </IconButton>
+          <IconButton onClick={() => handleDeletePost(post.id)}>
+            <DeleteIcon color='warning' />
+          </IconButton>
+        </Stack>
+      </Stack>
+    </ListItem>
   );
 };
 
