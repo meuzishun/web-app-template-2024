@@ -18,13 +18,13 @@ function HomePage() {
         alignItems: 'center',
       }}
     >
-      <IconButton onClick={decrementCount} size='large' color='error'>
+      <IconButton onClick={decrementCount} size='large' color='minus'>
         <RemoveCircleIcon />
       </IconButton>
       <Typography variant='h3' component='p' sx={{ display: 'inline' }}>
         {counterValue}
       </Typography>
-      <IconButton onClick={incrementCount} size='large' color='success'>
+      <IconButton onClick={incrementCount} size='large' color='plus'>
         <AddCircleIcon />
       </IconButton>
     </Stack>
