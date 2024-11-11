@@ -12,30 +12,31 @@ function HomePage() {
 
   return (
     <Container>
-      <Typography variant='h6' align='center' sx={{ mt: 4 }}>
+      <Typography variant='h6' align='center' sx={{ mt: 8 }}>
         What would a React demo be without the obligatory...
       </Typography>
       <Typography variant='h2' align='center'>
         Counter Component
       </Typography>
       <Stack
-        direction='row'
-        spacing={4}
+        direction='column'
         sx={{
-          mt: 8,
+          mt: 4,
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <IconButton onClick={decrementCount} size='large' color='minus'>
-          <RemoveCircleIcon />
-        </IconButton>
         <Typography variant='h3' component='p' sx={{ display: 'inline' }}>
           {counterValue}
         </Typography>
-        <IconButton onClick={incrementCount} size='large' color='plus'>
-          <AddCircleIcon />
-        </IconButton>
+        <Stack direction='row'>
+          <IconButton onClick={decrementCount} size='large' color='minus'>
+            <RemoveCircleIcon />
+          </IconButton>
+          <IconButton onClick={incrementCount} size='large' color='plus'>
+            <AddCircleIcon />
+          </IconButton>
+        </Stack>
       </Stack>
     </Container>
   );
