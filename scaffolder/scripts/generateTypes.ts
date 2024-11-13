@@ -85,8 +85,21 @@ export const generateType = async (
     featureNamesDict = generateFeatureNames(featureName);
   }
 
-  // Confirm or prompt for type properties if not provided
+  const TypeInterfaceName = featureNamesDict.SingularPascal;
+  const StateInterfaceName = featureNamesDict.PluralPascal;
+  let filename = `${featureNamesDict.singularCamel}Types.ts`;
+
+  // Confirm filename
+  const filenameConfirmed = await askConfirmation(
+    `Should the filename be ${filename}?`
+  );
+
+  if (!filenameConfirmed) {
+    filename = await requireNonEmpty('Enter a new filename:');
+  }
+
   if (!typeProperties) {
+    // Confirm or prompt for type properties if not provided
     typeProperties = await promptForTypeProperties();
   }
 
@@ -94,29 +107,32 @@ export const generateType = async (
   const [includeStateInterface, stateProperties] =
     await promptForStateInterface();
 
+  // Get type content from the template
+  const typeContent = includeStateInterface
+    ? typesTemplate(
+        TypeInterfaceName,
+        typeProperties,
+        StateInterfaceName,
+        stateProperties
+      )
+    : typesTemplate(TypeInterfaceName, typeProperties);
+
+  // Define the full path for the new type file
+  const filePath = getFullPath(location, filename);
+
+  // Print generated template
+  console.log(typeContent);
+
   // Confirm type file creation
   const confirmType = await askConfirmation(
     `Generate type definitions for feature '${featureNamesDict.original}' in ${location}?`
   );
+
   if (!confirmType) {
     console.log('Type generation canceled.');
     closeCLI();
     return;
   }
-
-  // Get type content from the template
-  const typeContent = typesTemplate(
-    featureNamesDict,
-    typeProperties,
-    includeStateInterface,
-    stateProperties
-  );
-
-  // Define the full path for the new type file
-  const filePath = getFullPath(
-    location,
-    `${featureNamesDict.singularCamel}Types.ts`
-  );
 
   // Create the type file with directories using fileUtils
   createFileWithDirectories(filePath, typeContent);
