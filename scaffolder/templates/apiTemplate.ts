@@ -59,7 +59,6 @@ export const delete${SingularPascal} = async (id: number): Promise<void> => {
 import type { ${SingularPascal}Type } from '../types';
 
 ${urlDeclaration}
-
 ${getAllFunction}
 ${getOneFunction}
 ${createFunction}
