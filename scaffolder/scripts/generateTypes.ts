@@ -85,8 +85,8 @@ export const generateType = async (
     featureNamesDict = generateFeatureNames(featureName);
   }
 
-  const TypeInterfaceName = featureNamesDict.SingularPascal;
-  const StateInterfaceName = featureNamesDict.PluralPascal;
+  const TypeInterfaceName = `${featureNamesDict.SingularPascal}Type`;
+  const StateInterfaceName = `${featureNamesDict.PluralPascal}State`;
   let filename = `${featureNamesDict.singularCamel}Types.ts`;
 
   // Confirm filename
