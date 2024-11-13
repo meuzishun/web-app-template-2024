@@ -16,20 +16,30 @@ import { apiTemplate } from '../templates';
  * Prompts the user to choose which CRUD operations to include in the API.
  * @returns An object with boolean values indicating which operations to include.
  */
-const promptForApiOptions = async (): Promise<{
+const promptForApiOptions = async (
+  featureNamesDict: FeatureNamesType
+): Promise<{
   includeGetAll: boolean;
   includeGetOne: boolean;
   includeCreate: boolean;
   includeUpdate: boolean;
   includeDelete: boolean;
 }> => {
-  const includeGetAll = await askConfirmation('Include "Get All" function?');
-  const includeGetOne = await askConfirmation(
-    'Include "Get One by ID" function?'
+  const includeGetAll = await askConfirmation(
+    `Include fetch${featureNamesDict.PluralPascal} function?`
   );
-  const includeCreate = await askConfirmation('Include "Create" function?');
-  const includeUpdate = await askConfirmation('Include "Update" function?');
-  const includeDelete = await askConfirmation('Include "Delete" function?');
+  const includeGetOne = await askConfirmation(
+    `Include fetch${featureNamesDict.SingularPascal}ById function?`
+  );
+  const includeCreate = await askConfirmation(
+    `Include create${featureNamesDict.SingularPascal} function?`
+  );
+  const includeUpdate = await askConfirmation(
+    `Include update${featureNamesDict.SingularPascal} function?`
+  );
+  const includeDelete = await askConfirmation(
+    `Include delete${featureNamesDict.SingularPascal} function?`
+  );
 
   return {
     includeGetAll,
@@ -74,29 +84,41 @@ export const generateApi = async (
     featureNamesDict = generateFeatureNames(featureName);
   }
 
+  let filename = `${featureNamesDict.pluralCamel}Api.ts`;
+
+  // Confirm filename
+  const filenameConfirmed = await askConfirmation(
+    `Should the filename be ${filename}?`
+  );
+
+  if (!filenameConfirmed) {
+    filename = await requireNonEmpty('Enter a new filename:');
+  }
+
   // Prompt for API options if not provided
   if (!apiOptions) {
-    apiOptions = await promptForApiOptions();
+    apiOptions = await promptForApiOptions(featureNamesDict);
   }
+
+  // Generate API content from the template
+  const apiContent = apiTemplate(featureNamesDict, apiOptions);
+
+  // Print generated template
+  console.log(apiContent);
 
   // Confirm API file creation
   const confirmApi = await askConfirmation(
     `Generate API for feature '${featureNamesDict.original}' in ${location}?`
   );
+
   if (!confirmApi) {
     console.log('API generation canceled.');
     closeCLI();
     return;
   }
 
-  // Generate API content from the template
-  const apiContent = apiTemplate(featureNamesDict, apiOptions);
-
   // Define the full path for the new API file
-  const filePath = getFullPath(
-    location,
-    `${featureNamesDict.pluralCamel}Api.ts`
-  );
+  const filePath = getFullPath(location, filename);
 
   // Create the file and ensure its directory exists using fileUtils
   createFileWithDirectories(filePath, apiContent);
