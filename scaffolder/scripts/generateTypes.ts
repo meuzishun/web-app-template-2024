@@ -41,10 +41,25 @@ const promptForTypeProperties = async (): Promise<string> => {
  * Prompts the user to configure the state interface, if desired.
  * @returns The properties for the state interface as a string, or an empty string if omitted.
  */
-const promptForStateInterface = async (): Promise<[boolean, string]> => {
+const promptForStateInterface = async (
+  featureNamesDict: FeatureNamesType
+): Promise<[boolean, string, string]> => {
   const includeStateInterface = await askConfirmation(
     'Would you like to include a state interface for this feature?'
   );
+
+  let StateInterfaceName = `${featureNamesDict.PluralPascal}State`;
+
+  // Confirm type interface name
+  const stateInterfaceNameConfirmed = await askConfirmation(
+    `Should the state interface name be ${StateInterfaceName}?`
+  );
+
+  if (!stateInterfaceNameConfirmed) {
+    StateInterfaceName = await requireNonEmpty(
+      'Enter a new state interface name:'
+    );
+  }
 
   let stateProperties = '';
 
@@ -53,7 +68,7 @@ const promptForStateInterface = async (): Promise<[boolean, string]> => {
     stateProperties = await promptForTypeProperties();
   }
 
-  return [includeStateInterface, stateProperties];
+  return [includeStateInterface, StateInterfaceName, stateProperties];
 };
 
 /**
@@ -85,8 +100,6 @@ export const generateType = async (
     featureNamesDict = generateFeatureNames(featureName);
   }
 
-  const TypeInterfaceName = `${featureNamesDict.SingularPascal}Type`;
-  const StateInterfaceName = `${featureNamesDict.PluralPascal}State`;
   let filename = `${featureNamesDict.singularCamel}Types.ts`;
 
   // Confirm filename
@@ -98,14 +111,27 @@ export const generateType = async (
     filename = await requireNonEmpty('Enter a new filename:');
   }
 
+  let TypeInterfaceName = `${featureNamesDict.SingularPascal}Type`;
+
+  // Confirm type interface name
+  const interfaceNameConfirmed = await askConfirmation(
+    `Should the type interface name be ${TypeInterfaceName}?`
+  );
+
+  if (!interfaceNameConfirmed) {
+    TypeInterfaceName = await requireNonEmpty(
+      'Enter a new type interface name:'
+    );
+  }
+
   if (!typeProperties) {
     // Confirm or prompt for type properties if not provided
     typeProperties = await promptForTypeProperties();
   }
 
   // Ask the user about including and customizing the state interface
-  const [includeStateInterface, stateProperties] =
-    await promptForStateInterface();
+  const [includeStateInterface, StateInterfaceName, stateProperties] =
+    await promptForStateInterface(featureNamesDict);
 
   // Get type content from the template
   const typeContent = includeStateInterface

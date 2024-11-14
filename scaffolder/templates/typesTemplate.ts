@@ -6,7 +6,6 @@ export const typesTemplate = (
 ): string => {
   let template = `export interface ${TypeInterfaceName} {
   ${typeProperties}
-  // Add more fields here
 }
 `;
 
