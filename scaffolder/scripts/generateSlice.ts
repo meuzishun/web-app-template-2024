@@ -7,6 +7,7 @@ import {
   closeCLI,
   requireNonEmpty,
   askConfirmation,
+  askForDirectory,
   showHeader,
 } from '../utils';
 
@@ -17,26 +18,68 @@ import { sliceTemplate } from '../templates/sliceTemplate';
  * @param location - The directory where the slice file will be saved.
  * @param featureNamesDict - A dictionary of versions of the feature name (e.g., 'posts', 'Posts', 'post', 'Post').
  */
-export const generateSlice = (
-  location: string,
-  featureNamesDict: FeatureNamesType
+export const generateSlice = async (
+  location?: string,
+  featureNamesDict?: FeatureNamesType
 ) => {
   showHeader('Slice Generation');
 
-  // Ensure location and featureName are provided
-  if (!location || !featureNamesDict) {
-    console.error('Usage: generateSlice <location> <featureName>');
-    process.exit(1);
+  // Prompt for location if not provided
+  if (!location) {
+    location = await askForDirectory(
+      'Enter the location directory for the slice definition:'
+    );
+  }
+
+  // Prompt for feature name if featureNamesDict is not provided
+  if (!featureNamesDict) {
+    const featureName = await requireNonEmpty(
+      'Enter the feature name (e.g., "posts"):'
+    );
+    featureNamesDict = generateFeatureNames(featureName);
+  }
+
+  // Confirm filename
+  let filename = `${featureNamesDict.pluralCamel}Slice.ts`;
+
+  const filenameConfirmed = await askConfirmation(
+    `Should the filename be ${filename}?`
+  );
+
+  if (!filenameConfirmed) {
+    filename = await requireNonEmpty('Enter a new filename:');
+  }
+
+  // Confirm name property of slice
+  let sliceNameProp = `${featureNamesDict.pluralCamel}`;
+
+  const sliceNamePropConfirmed = await askConfirmation(
+    `Should the name prop of the slice be ${sliceNameProp}`
+  );
+
+  if (!sliceNamePropConfirmed) {
+    sliceNameProp = await requireNonEmpty('Enter a new name prop for slice:');
   }
 
   // Get slice content from the template
-  const sliceContent = sliceTemplate(featureNamesDict);
+  const sliceContent = sliceTemplate(sliceNameProp, featureNamesDict);
 
   // Define the full path for the new slice file
-  const filePath = getFullPath(
-    location,
-    `${featureNamesDict.pluralCamel}Slice.ts`
+  const filePath = getFullPath(location, filename);
+
+  // Print generated template
+  console.log(sliceContent);
+
+  // Confirm slice creation
+  const confirmSlice = await askConfirmation(
+    `Generate a slice for feature '${featureNamesDict.original}' in ${location}?`
   );
+
+  if (!confirmSlice) {
+    console.log('Slice generation canceled.');
+    closeCLI();
+    return;
+  }
 
   // Create the slice file with directories using fileUtils
   createFileWithDirectories(filePath, sliceContent);
@@ -53,36 +96,15 @@ export const generateSlice = (
 if (process.argv[1] === new URL(import.meta.url).pathname) {
   (async () => {
     try {
-      // Prompt for location if not provided
-      let location = process.argv[2];
-      if (!location) {
-        location = await requireNonEmpty(
-          'Enter the location directory for the slice:'
-        );
-      }
+      // Parse CLI arguments for location and feature name, if provided
+      const [, , locationArg, featureNameArg] = process.argv;
+      const location = locationArg ? locationArg : undefined;
+      const featureNamesDict = featureNameArg
+        ? generateFeatureNames(featureNameArg)
+        : undefined;
 
-      // Prompt for feature name if not provided
-      let featureName = process.argv[3];
-      if (!featureName) {
-        featureName = await requireNonEmpty(
-          'Enter the feature name (e.g., "posts"):'
-        );
-      }
-
-      const featureNamesDict = generateFeatureNames(featureName);
-
-      // Confirm slice creation
-      const confirmSlice = await askConfirmation(
-        `Generate a slice for feature '${featureNamesDict.original}' in ${location}?`
-      );
-      if (!confirmSlice) {
-        console.log('Slice generation canceled.');
-        closeCLI();
-        return;
-      }
-
-      // Generate the slice if confirmed
-      generateSlice(location, featureNamesDict);
+      // Run generateSlice with optional prompts for missing arguments
+      await generateSlice(location, featureNamesDict);
     } catch (error) {
       console.error(`Error: ${error.message}`);
     } finally {

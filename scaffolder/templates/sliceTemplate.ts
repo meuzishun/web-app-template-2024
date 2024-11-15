@@ -1,6 +1,9 @@
 import { FeatureNamesType } from '../utils';
 
-export const sliceTemplate = (featureNamesDict: FeatureNamesType): string => {
+export const sliceTemplate = (
+  sliceNameProp: string,
+  featureNamesDict: FeatureNamesType
+): string => {
   return `import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { ${featureNamesDict.PluralPascal}State } from '../types';
 
@@ -9,8 +12,8 @@ const initialState: ${featureNamesDict.PluralPascal}State = {
   ${featureNamesDict.pluralCamel}: [],
 };
 
-const ${featureNamesDict.pluralCamel}Slice = createSlice({
-  name: '${featureNamesDict.pluralCamel}',
+const ${featureNamesDict.pluralCamel} = createSlice({
+  name: '${sliceNameProp}',
   initialState,
   reducers: {
     // Define reducers here
@@ -21,9 +24,9 @@ const ${featureNamesDict.pluralCamel}Slice = createSlice({
 });
 
 // Export actions as named exports
-export const { exampleReducer } = ${featureNamesDict.pluralCamel}Slice.actions;
+export const { exampleReducer } = ${featureNamesDict.pluralCamel}.actions;
 
 // Export reducer as default export
-export default ${featureNamesDict.pluralCamel}Slice.reducer;
+export default ${featureNamesDict.pluralCamel}.reducer;
 `;
 };
