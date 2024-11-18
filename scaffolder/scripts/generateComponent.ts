@@ -15,7 +15,7 @@ import { componentTemplate } from '../templates';
  * @param location - The directory where the component file will be saved.
  * @param featureNamesDict - A dictionary of versions of the feature name (e.g., 'posts', 'Posts', 'post', 'Post').
  */
-export const generateComponent = (
+export const generateComponent = async (
   location: string,
   featureNamesDict: FeatureNamesType
 ) => {
