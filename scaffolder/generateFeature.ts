@@ -60,7 +60,7 @@ const generateFeature = async () => {
     // Generate slice file if requested and update index
     if (createSlice) {
       const slicesDir = `${baseDir}/slices`;
-      generateSlice(slicesDir, featureNamesDict);
+      await generateSlice(slicesDir, featureNamesDict);
       showMessage(
         `Redux slice created for ${featureNamesDict.original}.`,
         'success'
@@ -69,7 +69,7 @@ const generateFeature = async () => {
 
     // Generate component file and update index
     const componentsDir = `${baseDir}/components`;
-    generateComponent(componentsDir, featureNamesDict);
+    await generateComponent(componentsDir, featureNamesDict);
 
     // Generate hook file and update index
     const hooksDir = `${baseDir}/hooks`;
