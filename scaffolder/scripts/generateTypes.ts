@@ -48,6 +48,10 @@ const promptForStateInterface = async (
     'Would you like to include a state interface for this feature?'
   );
 
+  if (!includeStateInterface) {
+    return [false, '', ''];
+  }
+
   let StateInterfaceName = `${featureNamesDict.PluralPascal}State`;
 
   // Confirm type interface name
