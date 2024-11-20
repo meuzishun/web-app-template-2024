@@ -1,27 +1,51 @@
-import { FeatureNamesType } from '../utils';
-
 export const componentTemplate = (
-  featureNamesDict: FeatureNamesType
+  componentName: string,
+  props: string[],
+  types: string[],
+  hooks: string[]
 ): string => {
+  const propsString = props.length
+    ? `\ninterface ${componentName}Props {\n  ${props.join('\n  ')}\n}`
+    : '';
+
+  const typesString = types.length
+    ? `import type { ${types.join('Type, ')} } from '../types';`
+    : '';
+
+  const hookImportsString = hooks.length
+    ? `import { ${hooks.join(', ')} } from '../hooks';`
+    : '';
+
   return `import React from 'react';
-import type { ${featureNamesDict.SingularPascal}Type } from '../types';
+${hookImportsString}
+${typesString}
+${propsString}
 
-interface ${featureNamesDict.SingularPascal}Props {
-  title?: string;
-  ${featureNamesDict.pluralCamel}: ${featureNamesDict.SingularPascal}Type[];
-  // Add more prop types here
-}
-
-const ${featureNamesDict.PluralPascal}: React.FC<${featureNamesDict.SingularPascal}Props> = ({ title, ${featureNamesDict.pluralCamel} }) => {
+const ${componentName}: React.FC${
+    props.length ? `<${componentName}Props>` : ''
+  } = (${
+    props.length
+      ? '{ ' + props.map((p) => p.split('?:')[0]).join(', ') + ' }'
+      : ''
+  }) => {
+  ${
+    hooks.length
+      ? hooks
+          .map(
+            (hook) =>
+              `const ${hook.replace(/^use/, '').toLowerCase()} = ${hook}();`
+          )
+          .join('\n  ')
+      : ''
+  }
+  
   return (
     <div>
-      {title && <h1>{title}</h1>}
-      <p>${featureNamesDict.SingularPascal} works!</p>
-      {${featureNamesDict.pluralCamel}.map((${featureNamesDict.singularCamel}) => <div key={${featureNamesDict.singularCamel}.id}>${featureNamesDict.singularCamel}</div>)}
+      <p>${componentName} works!</p>
     </div>
   );
 };
 
-export default ${featureNamesDict.PluralPascal};
+export default ${componentName};
 `;
 };
