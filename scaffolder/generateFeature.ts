@@ -32,9 +32,11 @@ const generateFeature = async () => {
     const createApi = await askConfirmation(
       'Will this feature be making API requests?'
     );
-
     const createSlice = await askConfirmation(
       'Does this feature need a slice of state from the store?'
+    );
+    const createComponent = await askConfirmation(
+      'Does this feature need components?'
     );
 
     // Define base directory path for the feature
@@ -68,8 +70,14 @@ const generateFeature = async () => {
     }
 
     // Generate component file and update index
-    const componentsDir = `${baseDir}/components`;
-    await generateComponent(componentsDir, featureNamesDict);
+    if (createComponent) {
+      const componentsDir = `${baseDir}/components`;
+      await generateComponent(componentsDir, featureNamesDict);
+      showMessage(
+        `Component created for ${featureNamesDict.original}.`,
+        'success'
+      );
+    }
 
     // Generate hook file and update index
     const hooksDir = `${baseDir}/hooks`;
