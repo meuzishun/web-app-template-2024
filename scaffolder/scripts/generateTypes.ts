@@ -9,6 +9,7 @@ import {
   askConfirmation,
   askForDirectory,
   showHeader,
+  previewCode,
 } from '../utils';
 
 import { typesTemplate } from '../templates/typesTemplate';
@@ -151,7 +152,7 @@ export const generateType = async (
   const filePath = getFullPath(location, filename);
 
   // Print generated template
-  console.log(typeContent);
+  previewCode(typeContent);
 
   // Confirm type file creation
   const confirmType = await askConfirmation(
