@@ -93,3 +93,102 @@ export const useDelete${SingularPascal} = () => {
       return '';
   }
 };
+
+export const fetchAllHookTemplate = (
+  featureNamesDict: FeatureNamesType
+): string => {
+  const { PluralPascal, pluralCamel } = featureNamesDict;
+  return `import { useQuery } from '@tanstack/react-query';
+import { fetch${PluralPascal} } from '../api/${pluralCamel}Api';
+
+export const useFetch${PluralPascal} = () => {
+  return useQuery({
+    queryKey: ['${pluralCamel}'],
+    queryFn: fetch${PluralPascal},
+  });
+};
+`;
+};
+
+export const fetchOneHookTemplate = (
+  featureNamesDict: FeatureNamesType
+): string => {
+  const { SingularPascal, singularCamel, pluralCamel } = featureNamesDict;
+  return `import { useQuery } from '@tanstack/react-query';
+import { fetch${SingularPascal}ById } from '../api/${pluralCamel}Api';
+
+export const useFetch${SingularPascal}ById = (id: number) => {
+  return useQuery({
+    queryKey: ['${singularCamel}', id],
+    queryFn: () => fetch${SingularPascal}ById(id),
+  });
+};
+`;
+};
+
+export const createHookTemplate = (
+  featureNamesDict: FeatureNamesType
+): string => {
+  const { SingularPascal, pluralCamel } = featureNamesDict;
+  return `import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { create${SingularPascal} } from '../api/${pluralCamel}Api';
+
+export const useCreate${SingularPascal} = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: create${SingularPascal},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['${pluralCamel}'] });
+    },
+  });
+};
+`;
+};
+
+export const updateHookTemplate = (
+  featureNamesDict: FeatureNamesType
+): string => {
+  const { SingularPascal, pluralCamel } = featureNamesDict;
+  return `import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { update${SingularPascal} } from '../api/${pluralCamel}Api';
+
+export const useUpdate${SingularPascal} = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: update${SingularPascal},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['${pluralCamel}'] });
+    },
+  });
+};
+`;
+};
+
+export const deleteHookTemplate = (
+  featureNamesDict: FeatureNamesType
+): string => {
+  const { SingularPascal, pluralCamel } = featureNamesDict;
+  return `import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { delete${SingularPascal} } from '../api/${pluralCamel}Api';
+
+export const useDelete${SingularPascal} = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: delete${SingularPascal},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['${pluralCamel}'] });
+    },
+  });
+};
+`;
+};
+
+export const customHookTemplate = (
+  featureNamesDict: FeatureNamesType
+): string => {
+  const { PluralPascal } = featureNamesDict;
+  return `export const use${PluralPascal} = () => {
+  // Add custom hook logic here
+};
+`;
+};
