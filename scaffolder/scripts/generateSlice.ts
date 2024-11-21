@@ -9,6 +9,7 @@ import {
   askConfirmation,
   askForDirectory,
   showHeader,
+  previewCode,
 } from '../utils';
 
 import { sliceTemplate } from '../templates/sliceTemplate';
@@ -68,7 +69,7 @@ export const generateSlice = async (
   const filePath = getFullPath(location, filename);
 
   // Print generated template
-  console.log(sliceContent);
+  previewCode(sliceContent);
 
   // Confirm slice creation
   const confirmSlice = await askConfirmation(

@@ -10,6 +10,7 @@ import {
   showHeader,
   replaceLastDirectory,
   showMessage,
+  previewCode,
 } from '../utils';
 
 import {
@@ -113,7 +114,7 @@ export const generateApi = async (
   const apiContent = apiTemplate(featureNamesDict, apiOptions);
 
   // Print generated template
-  console.log(apiContent);
+  previewCode(apiContent);
 
   // Confirm API file creation
   const confirmApi = await askConfirmation(
@@ -179,7 +180,7 @@ export const generateApi = async (
         const hookContent = apiHookDict[apiFunc].template(featureNamesDict);
 
         // print content
-        console.log(hookContent);
+        previewCode(hookContent);
 
         // prompt user for confirmation
         const confirmApi = await askConfirmation(

@@ -8,6 +8,7 @@ import {
   showHeader,
   requireNonEmpty,
   askConfirmation,
+  previewCode,
 } from '../utils';
 
 import { componentTemplate } from '../templates';
@@ -90,7 +91,7 @@ export const generateComponent = async (
     const filePath = getFullPath(location, `${componentName}.tsx`);
 
     // Print generated template
-    console.log(componentContent);
+    previewCode(componentContent);
 
     // Confirm type file creation
     const confirmType = await askConfirmation(
