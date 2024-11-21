@@ -8,9 +8,18 @@ import {
   requireNonEmpty,
   askConfirmation,
   showHeader,
+  replaceLastDirectory,
+  showMessage,
 } from '../utils';
 
-import { apiTemplate } from '../templates';
+import {
+  apiTemplate,
+  fetchAllHookTemplate,
+  fetchOneHookTemplate,
+  createHookTemplate,
+  updateHookTemplate,
+  deleteHookTemplate,
+} from '../templates';
 
 /**
  * Prompts the user to choose which CRUD operations to include in the API.
@@ -129,6 +138,71 @@ export const generateApi = async (
   // Update the index file in the same directory to include the new API file
   updateIndexFile(location);
   console.log(`Updated index.ts file in ${location}`);
+
+  // api function to hook template dictionary
+  const apiHookDict = {
+    includeGetAll: {
+      filename: `useFetchAll${featureNamesDict.PluralPascal}.ts`,
+      template: fetchAllHookTemplate,
+    },
+    includeGetOne: {
+      filename: `useFetch${featureNamesDict.SingularPascal}ById.ts`,
+      template: fetchOneHookTemplate,
+    },
+    includeCreate: {
+      filename: `useCreate${featureNamesDict.SingularPascal}.ts`,
+      template: createHookTemplate,
+    },
+    includeUpdate: {
+      filename: `useUpdate${featureNamesDict.SingularPascal}.ts`,
+      template: updateHookTemplate,
+    },
+    includeDelete: {
+      filename: `useDelete${featureNamesDict.SingularPascal}.ts`,
+      template: deleteHookTemplate,
+    },
+  };
+
+  // location for hooks
+  const hookLocation = replaceLastDirectory(location, 'hooks');
+
+  for (const [apiFunc, shouldInclude] of Object.entries(apiOptions)) {
+    if (shouldInclude) {
+      // generate filename
+      const filename = apiHookDict[apiFunc].filename;
+
+      // prompt user to confirm filename
+      const createHook = await askConfirmation(`Generate ${apiFunc} hook?`);
+
+      if (createHook) {
+        // create single hook content based on api function
+        const hookContent = apiHookDict[apiFunc].template(featureNamesDict);
+
+        // print content
+        console.log(hookContent);
+
+        // prompt user for confirmation
+        const confirmApi = await askConfirmation(
+          `Generate hook '${filename}' in ${location}?`
+        );
+
+        if (!confirmApi) {
+          console.log('API generation canceled.');
+          closeCLI();
+          return;
+        }
+
+        // calculate filepath
+        const filePath = getFullPath(hookLocation, filename);
+
+        // create file
+        createFileWithDirectories(filePath, hookContent);
+
+        // alert user of file creation
+        showMessage(`Hook file ${filename} created at ${filePath}`, 'success');
+      }
+    }
+  }
 };
 
 // Check if the module is running directly
