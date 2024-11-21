@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { highlight } from 'cli-highlight';
 
 // Consistent display for static messages like headers
 export const showHeader = (scriptName: string) => {
@@ -81,6 +82,19 @@ export const showMessage = (
       : chalk.red(`[ERROR] ${message}`);
   console.log(colorizedMessage);
 };
+
+/**
+ * Highlights TypeScript code and prints it to the console.
+ *
+ * @param code - The TypeScript code to preview.
+ */
+export function previewCode(code: string): void {
+  const highlightedCode = highlight(code, {
+    language: 'typescript',
+    ignoreIllegals: true,
+  });
+  console.log(highlightedCode);
+}
 
 // Close the readline interface (no longer needed when using `inquirer`)
 export const closeCLI = () => process.exit(0);
