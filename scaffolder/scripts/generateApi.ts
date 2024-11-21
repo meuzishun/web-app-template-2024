@@ -142,7 +142,7 @@ export const generateApi = async (
   // api function to hook template dictionary
   const apiHookDict = {
     includeGetAll: {
-      filename: `useFetchAll${featureNamesDict.PluralPascal}.ts`,
+      filename: `useFetch${featureNamesDict.PluralPascal}.ts`,
       template: fetchAllHookTemplate,
     },
     includeGetOne: {
