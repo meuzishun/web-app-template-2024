@@ -45,3 +45,17 @@ export const createFileWithDirectories = (
   createDirectory(dirPath); // Ensure the directory exists
   writeFile(filePath, content); // Write the file
 };
+
+/**
+ * Replace the last directory in a given path with a new directory.
+ * @param urlPath - The original path.
+ * @param newDirectory - The new directory to append.
+ * @returns The updated path.
+ */
+export const replaceLastDirectory = (
+  urlPath: string,
+  newDirectory: string
+): string => {
+  const dirPath = path.dirname(urlPath); // Get the directory path without the last segment
+  return path.join(dirPath, newDirectory); // Append the new directory
+};
