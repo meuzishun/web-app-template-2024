@@ -200,6 +200,10 @@ export const generateApi = async (
 
         // alert user of file creation
         showMessage(`Hook file ${filename} created at ${filePath}`, 'success');
+
+        // Update the index file in the same directory to include the new hook file
+        updateIndexFile(hookLocation);
+        console.log(`Updated index.ts file in ${hookLocation}`);
       }
     }
   }
