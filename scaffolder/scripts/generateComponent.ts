@@ -95,7 +95,7 @@ export const generateComponent = async (
 
     // Confirm type file creation
     const confirmType = await askConfirmation(
-      `Generate type definitions for feature '${featureNamesDict.original}' in ${location}?`
+      `Generate component ${componentName} for feature '${featureNamesDict.original}' in ${location}?`
     );
 
     if (!confirmType) {
