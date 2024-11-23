@@ -27,7 +27,7 @@
     "axios": "^1.7.7",
     "chalk": "^5.3.0",
     "cli-highlight": "^2.1.11",
-    "inquirer": "^6.5.2",
+    "inquirer": "^9.3.7",
     "inquirer-fuzzy-path": "^2.3.0",
     "pluralize": "^8.0.0",
     "react": "^18.3.1",
