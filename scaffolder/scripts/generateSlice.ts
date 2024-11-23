@@ -15,6 +15,31 @@ import {
 import { sliceTemplate } from '../templates/sliceTemplate';
 
 /**
+ * Prompts the user for initial state properties and their types.
+ * @returns An array of type properties as strings, e.g., `id: number; name: string;`
+ */
+const promptForInitialStateProperties = async (): Promise<string> => {
+  const properties: string[] = [];
+  let addMore = true;
+
+  while (addMore) {
+    const propName = await requireNonEmpty(
+      'Add a field for initial state (e.g., "id"):'
+    );
+
+    const propType = await requireNonEmpty(
+      `Enter property value for ${propName} (e.g., "true", "false", "0", etc.):`
+    );
+
+    properties.push(`${propName}: ${propType},`);
+
+    addMore = await askConfirmation('Would you like to add another field?');
+  }
+
+  return properties.join('\n  ');
+};
+
+/**
  * Generates a Redux slice file for the specified feature and updates the index file.
  * @param location - The directory where the slice file will be saved.
  * @param featureNamesDict - A dictionary of versions of the feature name (e.g., 'posts', 'Posts', 'post', 'Post').
@@ -41,7 +66,7 @@ export const generateSlice = async (
   }
 
   // Confirm filename
-  let filename = `${featureNamesDict.pluralCamel}Slice.ts`;
+  let filename = `${featureNamesDict.pluralCamel}Slice`;
 
   const filenameConfirmed = await askConfirmation(
     `Should the filename be ${filename}?`
@@ -62,11 +87,45 @@ export const generateSlice = async (
     sliceNameProp = await requireNonEmpty('Enter a new name prop for slice:');
   }
 
+  // prompt for initialState type
+  const typeStateConfirm = await askConfirmation(
+    'Import type for initialState?'
+  );
+
+  // prompt for initialState type name
+  let initialStateType: string | false = false;
+
+  if (typeStateConfirm) {
+    initialStateType = `${featureNamesDict.PluralPascal}State`;
+
+    const initialStateTypeConfirmed = await askConfirmation(
+      `Should the initialState type name be ${initialStateType}?`
+    );
+
+    if (!initialStateTypeConfirmed) {
+      initialStateType = await requireNonEmpty(
+        'Enter the name of the initialState type:'
+      );
+    }
+  }
+
+  // const initialStateType = typeStateConfirm
+  //   ? await requireNonEmpty('Enter the name of the initialState type:')
+  //   : null;
+
+  // prompt user for initial state types
+  const initialStateString = await promptForInitialStateProperties();
+
   // Get slice content from the template
-  const sliceContent = sliceTemplate(sliceNameProp, featureNamesDict);
+  const sliceContent = sliceTemplate(
+    filename,
+    sliceNameProp,
+    initialStateType,
+    initialStateString
+  );
 
   // Define the full path for the new slice file
-  const filePath = getFullPath(location, filename);
+  const filePath = getFullPath(location, `${filename}.ts`);
 
   // Print generated template
   previewCode(sliceContent);

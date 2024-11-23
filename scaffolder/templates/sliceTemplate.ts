@@ -1,18 +1,27 @@
-import { FeatureNamesType } from '../utils';
-
 export const sliceTemplate = (
+  filename: string,
   sliceNameProp: string,
-  featureNamesDict: FeatureNamesType
+  initialStateType?: string | false,
+  initialStateString?: string
 ): string => {
   return `import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { ${featureNamesDict.PluralPascal}State } from '../types';
+${
+  initialStateType ? `import type { ${initialStateType} } from '../types';` : ''
+}
 
-const initialState: ${featureNamesDict.PluralPascal}State = {
+${
+  initialStateType
+    ? `const initialState: ${initialStateType} = {
   // Define initial state structure here
-  ${featureNamesDict.pluralCamel}: [],
-};
+  ${initialStateString}
+};`
+    : `const initialState = {
+  // Define initial state structure here
+  ${initialStateString}
+};`
+}
 
-const ${featureNamesDict.pluralCamel} = createSlice({
+const ${filename} = createSlice({
   name: '${sliceNameProp}',
   initialState,
   reducers: {
@@ -24,9 +33,9 @@ const ${featureNamesDict.pluralCamel} = createSlice({
 });
 
 // Export actions as named exports
-export const { exampleReducer } = ${featureNamesDict.pluralCamel}.actions;
+export const { exampleReducer } = ${filename}.actions;
 
 // Export reducer as default export
-export default ${featureNamesDict.pluralCamel}.reducer;
+export default ${filename}.reducer;
 `;
 };
