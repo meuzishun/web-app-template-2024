@@ -1,8 +1,12 @@
 import inquirer from 'inquirer';
+import fuzzyPath from 'inquirer-fuzzy-path';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { highlight } from 'cli-highlight';
+
+// Register the fuzzy-path prompt
+inquirer.registerPrompt('fuzzy-path', fuzzyPath);
 
 // Consistent display for static messages like headers
 export const showHeader = (scriptName: string) => {
@@ -47,26 +51,41 @@ export const requireNonEmpty = async (question: string): Promise<string> => {
   return answer.trim();
 };
 
-// Directory autocomplete prompt
+// Directory selection with fuzzy-path
 export const askForDirectory = async (question: string): Promise<string> => {
+  // Resolve and validate `src` directory
+  const srcPath = path.resolve(process.cwd(), 'src');
+  if (!fs.existsSync(srcPath) || !fs.lstatSync(srcPath).isDirectory()) {
+    throw new Error(`The "src" directory does not exist at ${srcPath}`);
+  }
+
   const { directory } = await inquirer.prompt([
     {
-      type: 'autocomplete',
+      type: 'fuzzy-path',
       name: 'directory',
       message: chalk.cyan(question),
-      // Use a custom autocomplete function for navigating directories
-      source: async (_, input = '') => {
-        const baseDir = path.resolve('.');
-        const inputPath = path.join(baseDir, input);
+      rootPath: srcPath, // Base path for fuzzy search
+      itemType: 'directory', // Restrict to directories only
+      suggestOnly: true, // Allow appending input
+      depthLimit: 5, // Limit to 5 levels deep
+      default: '', // Start with an empty input
+      // Modify the list of directories after fetching
+      async source(_, input = '') {
+        const fullPath = path.join(srcPath, input);
         const dirs = fs
-          .readdirSync(inputPath, { withFileTypes: true })
+          .readdirSync(fullPath, { withFileTypes: true })
           .filter((dirent) => dirent.isDirectory())
           .map((dirent) => path.join(input, dirent.name));
-        return dirs;
+
+        // Manually return relative paths without the root `src` prefix
+        return dirs.map((dir) =>
+          path.relative(srcPath, path.resolve(srcPath, dir))
+        );
       },
     },
   ]);
-  return directory;
+
+  return directory; // Return the directory relative to `src`
 };
 
 // Show messages to the user, color-coded for type
