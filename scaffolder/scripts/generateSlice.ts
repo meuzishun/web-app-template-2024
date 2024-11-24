@@ -21,7 +21,7 @@ import { sliceHookTemplate } from '../templates/hookTemplate';
  * Prompts the user for initial state properties and their types.
  * @returns An array of type properties as strings, e.g., `id: number; name: string;`
  */
-const promptForInitialStateProperties = async (): Promise<string> => {
+const promptForInitialStateProperties = async (): Promise<string[]> => {
   const properties: string[] = [];
   let addMore = true;
 
@@ -39,7 +39,7 @@ const promptForInitialStateProperties = async (): Promise<string> => {
     addMore = await askConfirmation('Would you like to add another field?');
   }
 
-  return properties.join('\n  ');
+  return properties;
 };
 
 /**
@@ -113,7 +113,11 @@ export const generateSlice = async (
   }
 
   // prompt user for initial state types
-  const initialStateString = await promptForInitialStateProperties();
+  const initialStateProperties = await promptForInitialStateProperties();
+  const initialStateKeys = initialStateProperties.map(
+    (prop) => prop.split(':')[0]
+  );
+  const initialStateString = initialStateProperties.join('\n  ');
 
   // Get slice content from the template
   const sliceContent = sliceTemplate(
@@ -151,9 +155,7 @@ export const generateSlice = async (
   console.log(`Updated index.ts file in ${location}`);
 
   // prompt for hook creation
-  const createHook = await askConfirmation(
-    `Generate use${featureNamesDict.PluralPascal} hook?`
-  );
+  const createHook = await askConfirmation(`Generate hook for ${filename}?`);
 
   if (createHook) {
     // create hookLocation string
@@ -170,7 +172,11 @@ export const generateSlice = async (
       hookFilename = await requireNonEmpty('Enter the hook filename:');
     }
 
-    const hookContent = sliceHookTemplate(hookFilename);
+    const hookContent = sliceHookTemplate(
+      hookFilename,
+      sliceNameProp,
+      initialStateKeys
+    );
 
     previewCode(hookContent);
 
