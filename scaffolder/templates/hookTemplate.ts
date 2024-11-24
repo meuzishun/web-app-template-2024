@@ -183,17 +183,25 @@ export const useDelete${SingularPascal} = () => {
 `;
 };
 
-export const sliceHookTemplate = (hookFilename: string): string => {
+export const sliceHookTemplate = (
+  hookFilename: string,
+  sliceName: string,
+  initialStateKeys: string[]
+): string => {
   return `import { useAppSelector, useAppDispatch } from '~/store';
-import { /* stuff */ } from '../slices';
+import { /* actions from slice */ } from '../slices';
 
 export const ${hookFilename} = () => {
   const appDispatch = useAppDispatch();
-  // value
-  // use appDispatch for functions
+  ${initialStateKeys.map(
+    (key) =>
+      `const ${key} = useAppSelector((state) => state.${sliceName}.${key});`
+  )}
+  const func = () => appDispatch(/* action() */);
 
   return {
-    // value and functions
+    ${initialStateKeys.map((key) => `${key},`)}
+    func,
   }
 }`;
 };
