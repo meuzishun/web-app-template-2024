@@ -10,9 +10,12 @@ import {
   askForDirectory,
   showHeader,
   previewCode,
+  replaceLastDirectory,
+  showMessage,
 } from '../utils';
 
 import { sliceTemplate } from '../templates/sliceTemplate';
+import { sliceHookTemplate } from '../templates/hookTemplate';
 
 /**
  * Prompts the user for initial state properties and their types.
@@ -109,10 +112,6 @@ export const generateSlice = async (
     }
   }
 
-  // const initialStateType = typeStateConfirm
-  //   ? await requireNonEmpty('Enter the name of the initialState type:')
-  //   : null;
-
   // prompt user for initial state types
   const initialStateString = await promptForInitialStateProperties();
 
@@ -150,6 +149,50 @@ export const generateSlice = async (
   // Update the index file in the same directory to include the new slice
   updateIndexFile(location);
   console.log(`Updated index.ts file in ${location}`);
+
+  // prompt for hook creation
+  const createHook = await askConfirmation(
+    `Generate use${featureNamesDict.PluralPascal} hook?`
+  );
+
+  if (createHook) {
+    // create hookLocation string
+    const hookLocation = replaceLastDirectory(location, 'hooks');
+
+    // prompt user to confirm filename
+    let hookFilename = `use${featureNamesDict.PluralPascal}`;
+
+    const confirmHookFilename = await askConfirmation(
+      `Should the filename be ${hookFilename}?`
+    );
+
+    if (!confirmHookFilename) {
+      hookFilename = await requireNonEmpty('Enter the hook filename:');
+    }
+
+    const hookContent = sliceHookTemplate(hookFilename);
+
+    previewCode(hookContent);
+
+    const confirmApi = await askConfirmation(
+      `Generate hook '${hookFilename}' in ${hookLocation}?`
+    );
+
+    if (!confirmApi) {
+      console.log('API generation canceled.');
+      closeCLI();
+      return;
+    }
+
+    const filePath = getFullPath(hookLocation, `${hookFilename}.ts`);
+
+    createFileWithDirectories(filePath, hookContent);
+
+    showMessage(`Hook file ${hookFilename} created at ${filePath}`, 'success');
+
+    updateIndexFile(hookLocation);
+    console.log(`Updated index.ts file in ${hookLocation}`);
+  }
 };
 
 // Check if the module is running directly
