@@ -183,7 +183,22 @@ export const useDelete${SingularPascal} = () => {
 `;
 };
 
-export const customHookTemplate = (
+export const sliceHookTemplate = (hookFilename: string): string => {
+  return `import { useAppSelector, useAppDispatch } from '~/store';
+import { /* stuff */ } from '../slices';
+
+export const ${hookFilename} = () => {
+  const appDispatch = useAppDispatch();
+  // value
+  // use appDispatch for functions
+
+  return {
+    // value and functions
+  }
+}`;
+};
+
+export const defaultHookTemplate = (
   featureNamesDict: FeatureNamesType
 ): string => {
   const { PluralPascal } = featureNamesDict;
