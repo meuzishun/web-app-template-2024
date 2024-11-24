@@ -12,6 +12,7 @@ import {
   previewCode,
   replaceLastDirectory,
   showMessage,
+  addReducerToFile,
 } from '../utils';
 
 import { sliceTemplate } from '../templates/sliceTemplate';
@@ -153,6 +154,25 @@ export const generateSlice = async (
   // Update the index file in the same directory to include the new slice
   updateIndexFile(location);
   console.log(`Updated index.ts file in ${location}`);
+
+  // prompt the user to confirm reducer inclusion in the store
+  const confirmReducerInclusion = await askConfirmation(
+    `Include this reducer in the Redux store?`
+  );
+
+  if (confirmReducerInclusion) {
+    // alter the reducers file in the store dir to import this reducer and add it to the combineReducers function
+    const reducersFilePath = getFullPath('src/store', 'reducers.ts');
+
+    addReducerToFile(
+      reducersFilePath,
+      filename,
+      `~/features/${featureNamesDict.original}`
+    );
+
+    // log successful change to ~src/store/reducers.ts
+    showMessage(`${featureNamesDict.original} reducer added to store.`);
+  }
 
   // prompt for hook creation
   const createHook = await askConfirmation(`Generate hook for ${filename}?`);
