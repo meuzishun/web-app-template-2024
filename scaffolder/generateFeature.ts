@@ -13,7 +13,6 @@ import {
   generateType,
   generateSlice,
   generateApi,
-  generateHooks,
   generateComponent,
 } from './scripts';
 
@@ -78,10 +77,6 @@ const generateFeature = async () => {
         'success'
       );
     }
-
-    // Generate hook file and update index
-    const hooksDir = `${baseDir}/hooks`;
-    await generateHooks(hooksDir, featureNamesDict);
 
     // Generate feature-level index.ts after creating subdirectories and files
     updateIndexFile(baseDir, true); // `true` enables recursive indexing
