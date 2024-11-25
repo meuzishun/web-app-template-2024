@@ -6,14 +6,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { NavLink } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
+import { NavItemType } from '~/types';
 
-const navItems = [
-  { text: 'Home', path: '/' },
-  { text: 'About', path: '/about' },
-  { text: 'Contact', path: '/contact' },
-];
+interface NavBarProps {
+  navItems: NavItemType[];
+}
 
-const NavBar: React.FC = () => {
+const NavBar: React.FC<NavBarProps> = ({ navItems }) => {
   return (
     <AppBar position='static' component='nav'>
       <Stack
