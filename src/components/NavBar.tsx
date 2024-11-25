@@ -9,17 +9,18 @@ import { Stack, Typography } from '@mui/material';
 import { NavItemType } from '~/types';
 
 interface NavBarProps {
+  heading?: string;
   navItems: NavItemType[];
 }
 
-const NavBar: React.FC<NavBarProps> = ({ navItems }) => {
+const NavBar: React.FC<NavBarProps> = ({ heading, navItems }) => {
   return (
     <AppBar position='static' component='nav'>
       <Stack
         direction='row'
         sx={{ justifyContent: 'space-between', alignItems: 'center', mx: 4 }}
       >
-        <Typography variant='h4'>Web App Template</Typography>
+        <Typography variant='h4'>{heading}</Typography>
         <List sx={{ display: 'inline-flex' }}>
           {navItems.map((item) => (
             <ListItem key={item.text} disablePadding>
