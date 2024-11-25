@@ -1,17 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { NavBar } from '~/components';
+import { navItems } from '~/data';
 
 const MainLayout: React.FC = () => {
   return (
     <>
-      <NavBar
-        navItems={[
-          { text: 'Home', path: '/' },
-          { text: 'About', path: '/about' },
-          { text: 'Contact', path: '/contact' },
-        ]}
-      />
+      <NavBar navItems={navItems} />
       <Outlet />
     </>
   );
