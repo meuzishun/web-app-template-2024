@@ -194,7 +194,7 @@ export const generateSlice = async (
 
     const hookContent = sliceHookTemplate(
       hookFilename,
-      sliceNameProp,
+      filename,
       initialStateKeys
     );
 
