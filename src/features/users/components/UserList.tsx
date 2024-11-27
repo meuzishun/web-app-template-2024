@@ -3,13 +3,13 @@ import List from '@mui/material/List';
 import { UserType } from '../types';
 import { useUsers } from '../hooks';
 import User from './User';
-import { LoadingIndicator } from '~/components';
+import { LoadingIndicator, ErrorComponent } from '~/components';
 
 const UserList: React.FC = () => {
   const { data: users, isLoading, error } = useUsers();
 
   if (isLoading) return <LoadingIndicator />;
-  if (error) return <div>Error loading users</div>;
+  if (error) return <ErrorComponent />;
 
   return (
     <List>

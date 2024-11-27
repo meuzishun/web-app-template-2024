@@ -6,13 +6,16 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 import Post from './Post';
+import { PostType } from '../types';
 import { usePosts, useCreatePost } from '../hooks';
+import { LoadingIndicator, ErrorComponent } from '~/components';
 
 const PostList: React.FC = () => {
-  const { data: posts, isLoading } = usePosts();
+  const { data: posts, isLoading, error } = usePosts();
   const createPostMutation = useCreatePost();
 
-  if (isLoading) return <div>Loading posts...</div>;
+  if (isLoading) return <LoadingIndicator />;
+  if (error) return <ErrorComponent />;
 
   const handleCreatePost = () => {
     createPostMutation.mutate({
@@ -37,7 +40,7 @@ const PostList: React.FC = () => {
         </Button>
       </Stack>
       <List>
-        {posts?.map((post) => (
+        {posts?.map((post: PostType) => (
           <Post key={post.id} post={post} />
         ))}
       </List>
