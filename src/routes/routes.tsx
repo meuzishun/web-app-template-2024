@@ -6,18 +6,17 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { MainLayout } from '~/layouts';
+import LoadingPage from '~/pages/LoadingPage';
 
 const HomePage = lazy(() => import('~/pages/HomePage'));
 const AboutPage = lazy(() => import('~/pages/AboutPage'));
 const ContactPage = lazy(() => import('~/pages/ContactPage'));
 const NotFoundPage = lazy(() => import('~/pages/NotFoundPage'));
 
-const Loader: React.FC = () => <div>Loading...</div>;
-
 const AppRoutes: React.FC = () => {
   return (
     <Router>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<LoadingPage />}>
         <Routes>
           <Route path='/' element={<MainLayout />}>
             <Route index element={<HomePage />} />
