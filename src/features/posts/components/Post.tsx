@@ -1,6 +1,6 @@
 import React from 'react';
-import ListItem from '@mui/material/ListItem';
 import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -28,10 +28,9 @@ const Post: React.FC<PostProps> = ({ post }) => {
   const theme = useTheme();
 
   return (
-    <ListItem
+    <Card
       sx={{
         p: 2,
-        mb: 4,
         backgroundColor: theme.palette.grey[50],
         borderRadius: 2,
       }}
@@ -41,7 +40,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         <Typography variant='body1' sx={{ ml: 4 }}>
           {post.content}
         </Typography>
-        <Stack direction='row'>
+        <Stack direction='row' justifyContent='flex-end'>
           <IconButton onClick={() => handleUpdatePost(post)}>
             <EditIcon color='primary' />
           </IconButton>
@@ -50,7 +49,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           </IconButton>
         </Stack>
       </Stack>
-    </ListItem>
+    </Card>
   );
 };
 

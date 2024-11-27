@@ -4,7 +4,6 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import List from '@mui/material/List';
 import Post from './Post';
 import { PostType } from '../types';
 import { usePosts, useCreatePost } from '../hooks';
@@ -39,11 +38,11 @@ const PostList: React.FC = () => {
           Create Post
         </Button>
       </Stack>
-      <List>
+      <Stack direction='column' gap={4}>
         {posts?.map((post: PostType) => (
           <Post key={post.id} post={post} />
         ))}
-      </List>
+      </Stack>
     </Box>
   );
 };
