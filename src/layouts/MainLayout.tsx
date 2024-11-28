@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { NavBar } from '~/components';
@@ -5,10 +6,10 @@ import { navItems } from '~/data';
 
 const MainLayout: React.FC = () => {
   return (
-    <>
+    <Box sx={{ minHeight: '100vh', bgcolor: '#f9f9f9' }}>
       <NavBar heading='Web App Template' navItems={navItems} />
       <Outlet />
-    </>
+    </Box>
   );
 };
 
