@@ -26,7 +26,7 @@ export const fetch${PluralPascal} = async (): Promise<${SingularPascal}Type[]> =
 
   const getOneFunction = options.includeGetOne
     ? `
-export const fetch${SingularPascal}ById = async (id: number): Promise<${SingularPascal}Type | null> => {
+export const fetch${SingularPascal}ById = async (id: string): Promise<${SingularPascal}Type | null> => {
   const response = await axiosInstance.get(\`\${url}/\${id}\`);
   return response.data;
 };`
@@ -50,7 +50,7 @@ export const update${SingularPascal} = async (updated${SingularPascal}: ${Singul
 
   const deleteFunction = options.includeDelete
     ? `
-export const delete${SingularPascal} = async (id: number): Promise<void> => {
+export const delete${SingularPascal} = async (id: string): Promise<void> => {
   await axiosInstance.delete(\`\${url}/\${id}\`);
 };`
     : '';

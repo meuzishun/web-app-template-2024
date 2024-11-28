@@ -30,7 +30,7 @@ export const useFetch${PluralPascal} = () => {
       return `import { useQuery } from '@tanstack/react-query';
 import { fetch${SingularPascal}ById } from '../api/${pluralCamel}Api';
 
-export const useFetch${SingularPascal}ById = (id: number) => {
+export const useFetch${SingularPascal}ById = (id: string) => {
   return useQuery({
     queryKey: ['${singularCamel}', id],
     queryFn: () => fetch${SingularPascal}ById(id),
@@ -117,7 +117,7 @@ export const fetchOneHookTemplate = (
   return `import { useQuery } from '@tanstack/react-query';
 import { fetch${SingularPascal}ById } from '../api/${pluralCamel}Api';
 
-export const useFetch${SingularPascal}ById = (id: number) => {
+export const useFetch${SingularPascal}ById = (id: string) => {
   return useQuery({
     queryKey: ['${singularCamel}', id],
     queryFn: () => fetch${SingularPascal}ById(id),
