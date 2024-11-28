@@ -7,7 +7,7 @@ function ContactPage() {
   return (
     <Container sx={{ mt: 8 }}>
       <Stack direction='column'>
-        <Typography variant='h3'>Users</Typography>
+        <Typography variant='h4'>Users</Typography>
         <UserList />
       </Stack>
     </Container>
