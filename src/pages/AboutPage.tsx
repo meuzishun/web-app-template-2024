@@ -1,12 +1,7 @@
 import Container from '@mui/material/Container';
-import { PostList } from '~/features/posts';
 
 function AboutPage() {
-  return (
-    <Container sx={{ mt: 8 }}>
-      <PostList />
-    </Container>
-  );
+  return <Container sx={{ mt: 8 }}></Container>;
 }
 
 export default AboutPage;
