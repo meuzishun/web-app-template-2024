@@ -6,7 +6,7 @@ import { navItems } from '~/data';
 
 const MainLayout: React.FC = () => {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f9f9f9' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: '#f4f4f4' }}>
       <NavBar heading='Web App Template' navItems={navItems} />
       <Outlet />
     </Box>
