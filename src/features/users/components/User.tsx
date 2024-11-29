@@ -1,7 +1,5 @@
 import React from 'react';
-import ListItem from '@mui/material/ListItem';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import { ListItem, Typography, Link } from '@mui/material';
 import type { UserType } from '../types';
 
 interface UserProps {

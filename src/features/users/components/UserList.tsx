@@ -1,5 +1,5 @@
 import React from 'react';
-import List from '@mui/material/List';
+import { List } from '@mui/material';
 import { UserType } from '../types';
 import { useUsers } from '../hooks';
 import User from './User';
