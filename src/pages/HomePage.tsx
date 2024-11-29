@@ -1,13 +1,9 @@
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import Typography from '@mui/material/Typography';
-
+import React from 'react';
+import { Container, Stack, IconButton, Typography } from '@mui/material';
+import { AddCircle, RemoveCircle } from '@mui/icons-material';
 import { useCounter } from '~/features/counter';
 
-function HomePage() {
+const HomePage: React.FC = () => {
   const { counterValue, incrementCount, decrementCount } = useCounter();
 
   return (
@@ -31,15 +27,15 @@ function HomePage() {
         </Typography>
         <Stack direction='row'>
           <IconButton onClick={decrementCount} size='large' color='minus'>
-            <RemoveCircleIcon />
+            <RemoveCircle />
           </IconButton>
           <IconButton onClick={incrementCount} size='large' color='plus'>
-            <AddCircleIcon />
+            <AddCircle />
           </IconButton>
         </Stack>
       </Stack>
     </Container>
   );
-}
+};
 
 export default HomePage;

@@ -1,9 +1,8 @@
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+import { Container, Stack, Typography } from '@mui/material';
 import { UserList } from '~/features/users';
 
-function ContactPage() {
+const ContactPage: React.FC = () => {
   return (
     <Container sx={{ mt: 8 }}>
       <Stack direction='column'>
@@ -12,6 +11,6 @@ function ContactPage() {
       </Stack>
     </Container>
   );
-}
+};
 
 export default ContactPage;

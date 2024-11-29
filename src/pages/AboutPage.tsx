@@ -1,8 +1,8 @@
-import { Typography } from '@mui/material';
-import Container from '@mui/material/Container';
+import React from 'react';
+import { Typography, Container } from '@mui/material';
 import { texts } from '~/data';
 
-function AboutPage() {
+const AboutPage: React.FC = () => {
   return (
     <Container sx={{ mt: 8 }}>
       <Typography variant='h4' mb={2}>
@@ -11,6 +11,6 @@ function AboutPage() {
       <Typography variant='body1'>{texts.about}</Typography>
     </Container>
   );
-}
+};
 
 export default AboutPage;
