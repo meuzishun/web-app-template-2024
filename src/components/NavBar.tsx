@@ -1,11 +1,14 @@
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import {
+  AppBar,
+  Stack,
+  Typography,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { Stack, Typography } from '@mui/material';
 import { NavItemType } from '~/types';
 
 interface NavBarProps {
