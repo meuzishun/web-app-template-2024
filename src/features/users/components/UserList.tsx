@@ -1,8 +1,6 @@
 import React from 'react';
 import { List } from '@mui/material';
-import { UserType } from '../types';
-import { useUsers } from '../hooks';
-import User from './User';
+import { UserType, useUsers, User } from '~/features/users';
 import { LoadingIndicator, ErrorComponent } from '~/components';
 
 const UserList: React.FC = () => {

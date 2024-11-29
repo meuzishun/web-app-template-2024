@@ -1,6 +1,6 @@
 import React from 'react';
+import { UserType } from '~/features/users';
 import { ListItem, Typography, Link } from '@mui/material';
-import type { UserType } from '../types';
 
 interface UserProps {
   user: UserType;
