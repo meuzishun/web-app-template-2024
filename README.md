@@ -46,7 +46,7 @@ For more details about the development setup and Vite-specific configurations, s
 
 Here's an overview of the project structure:
 
-```
+```bash
 src/
 ├── App.tsx
 ├── api
@@ -95,7 +95,7 @@ Each directory has a specific responsibility and most have an index file for [ba
 
 Here are the directory structures for the template features (Counter and Users):
 
-```
+```bash
 src/features/counter/
 ├── components
 ├── hooks
@@ -110,7 +110,7 @@ src/features/counter/
     └── index.ts
 ```
 
-```
+```bash
 src/features/users/
 ├── api
 │   ├── index.ts
@@ -136,7 +136,7 @@ Such a structure, as well organized as it might be, comes with a cost: every new
 
 This template comes with an app for generating code. Outside the src directory, in the root directory is another directory: scaffolder. Here is the directory structure:
 
-```
+```bash
 scaffolder/
 ├── generateFeature.ts
 ├── scripts
@@ -508,7 +508,7 @@ export default PostsContainer;
 
 Before we go through and alter the generated code, let's make sure our posts directory is correct:
 
-```
+```bash
 src/features/posts/
 ├── api
 │   ├── index.ts
