@@ -4,6 +4,12 @@
 
 This project is a scalable, feature-based frontend template for React applications, designed with TypeScript, Redux, axios, and react-query, with a bonus 'scaffolder' app which automates the generation of new features.
 
+## TOC
+
+- [Getting Started](#getting-started)
+- [Architecture Overview](#architecture-overview)
+- [Scaffolder](#scaffolder)
+
 ### Additional Documentation
 
 For more details about the development setup and Vite-specific configurations, see the [React + TypeScript + Vite](#react--typescript--vite) section.
@@ -458,6 +464,12 @@ export * from './useUpdatePost';
 
 #### Generating Components
 
+Before we start generating components, let's plan the structure of our feature. For `posts`, we need:
+
+1. **Post Component**: Represents a single post.
+2. **PostsContainer Component**: A container displaying multiple `Post` components.
+3. **Posts Component**: An outer wrapper for additional features (e.g., header, layout).
+
 Before we start generating components, let's take a moment and think about the structure of what we are creating. We'll need a component for an individual post, a container for the posts, and an outer wrapped so we can include a header. Later we will alter some of these components when we implement the hide/display state.
 
 Let's change the name of our first component to 'Post'. We will include a single prop, 'post', and the type will be our PostType we generated earlier. We then need to import this type. This component will not use a hook. Confirm the generated code:
@@ -503,6 +515,8 @@ const PostsContainer: React.FC = () => {
 
 export default PostsContainer;
 ```
+
+Lastly, we'll generate a 'Posts' component to wrap the 'PostsContainer' and a heading. This component will not need props, types, or hooks.
 
 #### Alterations
 
