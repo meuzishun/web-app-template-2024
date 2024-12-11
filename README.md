@@ -1,10 +1,10 @@
-# Frontend Template Project
+# Frontend Project Template
 
-## About This Project
+## About This Template
 
-This project is a scalable, feature-based frontend template for React applications, designed with TypeScript, Redux, axios, and react-query, with a bonus 'scaffolder' app which automates the generation of new features.
+This is a scalable, feature-based frontend template for React applications, designed with TypeScript, Redux, axios, and react-query, with a bonus 'scaffolder' app which automates the generation of new features.
 
-## TOC
+## Table of Contents
 
 - [Getting Started](#getting-started)
 - [Architecture Overview](#architecture-overview)
